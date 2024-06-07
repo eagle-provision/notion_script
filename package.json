@@ -1,0 +1,23 @@
+{
+    "name": "si-business-support-system-scraper",
+    "version": "1.0.0",
+    "description": "Scrapes data from the SI業務支援システム website",
+    "main": "index.js",
+    "scripts": {
+        "start": "node index.js"
+    },
+    "dependencies": {
+        "@google-cloud/local-auth": "^3.0.1",
+        "@notionhq/client": "^2.2.15",
+        "dotenv": "^16.4.5",
+        "fs": "^0.0.1-security",
+        "googleapis": "^140.0.0",
+        "path": "^0.12.7",
+        "process": "^0.11.10"
+    },
+    "devDependencies": {
+        "eslint": "^8.35.0"
+    },
+    "author": "TIAN",
+    "license": "MIT"
+}
