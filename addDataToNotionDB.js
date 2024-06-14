@@ -130,81 +130,117 @@ async function addOrderShipmentDB(databaseId, companyName, createdDate, code, pr
 }
 
 
-async function addMoneyManagementDB(companyName, createdDate, code, productName, manager, status, solarInstall, refLink) {
+async function addMoneyManagementDB(databaseId, invoiceNo, orderAmount, orderAmountTax, requestDate, issueDate, invoiceIssueDate, transferDeadline, fax, depositAmount, SIFee, payDiff, depositDate, confirmDate) {
     try {
         const response = await notion.pages.create({
             parent: {
                 type: 'database_id',
-                database_id: process.env.ADD_MONEY_MANAGEMENT_DB,
+                database_id: databaseId,
             },
             properties: {
-                '社名': {
+                '請求書No': {
                     type: 'title',
                     title: [
                         {
                             type: 'text',
                             text: {
-                                content: companyName,
+                                content: invoiceNo,
                             },
                         },
                     ],
                 },
-                '依頼日': {
+                '受注金額': {
+                    type: 'rich_text',
+                    rich_text: [
+                        {
+                            type: 'text',
+                            text: {
+                                content: orderAmount || 'Untitled', // Provide a default value if code is undefined
+                            },
+                        },
+                    ],
+                },
+                '税込金額': {
+                    type: 'rich_text',
+                    rich_text: [
+                        {
+                            type: 'text',
+                            text: {
+                                content: orderAmountTax,
+                            },
+                        },
+                    ],
+                },
+                '振込依頼日': {
                     type: 'date',
-                    date: { start: createdDate },
+                    date: { start: requestDate },
                 },
-                'コード': {
+                '発行日付': {
+                    type: 'date',
+                    date: { start: issueDate },
+                },
+                '請求書発行日': {
+                    type: 'date',
+                    date: { start: invoiceIssueDate },
+                },
+                '振込締切日': {
+                    type: 'date',
+                    date: { start: transferDeadline },
+                },
+                'FAX': {
                     type: 'rich_text',
                     rich_text: [
                         {
                             type: 'text',
                             text: {
-                                content: code,
+                                content: fax,
                             },
                         },
                     ],
                 },
-                '物件名': {
+                '入金額': {
                     type: 'rich_text',
                     rich_text: [
                         {
                             type: 'text',
                             text: {
-                                content: productName,
+                                content: depositAmount,
                             },
                         },
                     ],
                 },
-                '営業担当': {
-                    type: 'select',
-                    select: {
-                        name: manager,
-                    },
-                },
-                'ステータス': {
-                    type: 'select',
-                    select: {
-                        name: status,
-                    },
-                },
-                '太陽光施工': {
+                'SI負担/手数料': {
                     type: 'rich_text',
                     rich_text: [
                         {
                             type: 'text',
                             text: {
-                                content: solarInstall,
+                                content: SIFee,
                             },
                         },
                     ],
                 },
-                '見積NO': {
-                    type: 'url',
-                    url: refLink,
+                '入金差異': {
+                    type: 'rich_text',
+                    rich_text: [
+                        {
+                            type: 'text',
+                            text: {
+                                content: payDiff,
+                            },
+                        },
+                    ],
                 },
+                '入金日': {
+                    type: 'date',
+                    date: { start: depositDate },
+                },
+                '確認日': {
+                    type: 'date',
+                    date: { start: confirmDate },
+                },         
             },
         });
-        console.log(response);
     } catch (error) {
         console.error(error.body);
     }
@@ -214,5 +250,5 @@ async function addMoneyManagementDB(companyName, createdDate, code, productName,
 
 module.exports = {
     addOrderShipmentDB: addOrderShipmentDB,
-
+    addMoneyManagementDB: addMoneyManagementDB,
   };

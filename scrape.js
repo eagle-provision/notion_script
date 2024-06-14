@@ -16,7 +16,7 @@ async function fetchData() {
     const sheets = google.sheets({ version: 'v4', auth: authClient });
 
     const spreadsheetId = process.env.GOOGLE_SHEET_ID;
-    const range = 'Sheet1!B4:DQ';
+    const range = '20240529共有用!B4:DQ';
 
     const response = await sheets.spreadsheets.values.get({
       spreadsheetId,
