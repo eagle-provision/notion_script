@@ -7,6 +7,8 @@ const notion = new Client({ auth: process.env.NOTION_API_KEY });
 
 async function addOrderShipmentDB(databaseId, companyName, createdDate, code, productNo, answerPeriod, clientNoti, propertyName, groupName, manager, status, orderDate, productName, solarInstall, refLink) {
     try {
+
+        // Googleシートから取得したデータを利用して、受注納期管理DBの新規ページ作成 
         const response = await notion.pages.create({
             parent: {
                 type: 'database_id',
@@ -132,6 +134,8 @@ async function addOrderShipmentDB(databaseId, companyName, createdDate, code, pr
 
 async function addMoneyManagementDB(databaseId, invoiceNo, orderAmount, orderAmountTax, requestDate, issueDate, invoiceIssueDate, transferDeadline, fax, depositAmount, SIFee, payDiff, depositDate, confirmDate) {
     try {
+
+        // Googleシートから取得したデータを利用して、経理入金管理DBの新規ページ作成
         const response = await notion.pages.create({
             parent: {
                 type: 'database_id',
@@ -246,9 +250,137 @@ async function addMoneyManagementDB(databaseId, invoiceNo, orderAmount, orderAmo
     }
 }
 
+async function addCompanyManagementDB(databaseId, objectName, manager, productName, saleSort, constructionProgress, onSiteSurveyDate, constructionDrawing, chatAndDrawing, constructionStartDate, equipmentProposal, equipmentConfirm, appGuideEmail, accountRequestDate, constructionPersonName, preWritingDate, panelInstallDate, applianceInstallDate, initialDate, solarInstallDate) {
+    try {
 
+        // Googleシートから取得したデータを利用して、経理入金管理DBの新規ページ作成
+        const response = await notion.pages.create({
+            parent: {
+                type: 'database_id',
+                database_id: databaseId,
+            },
+            properties: {
+                '物件名': {
+                    type: 'title',
+                    title: [
+                        {
+                            type: 'text',
+                            text: {
+                                content: objectName,
+                            },
+                        },
+                    ],
+                },
+                '営業担当': {
+                    type: 'select',
+                    select: {
+                        name: manager || 'Unknown', // Provide a default value if manager is undefined
+                    },
+                },
+                '商品': {
+                    type: 'select',
+                    select: {
+                        name: productName || 'Unknown', // Provide a default value if manager is undefined
+                    },
+                },
+                '販売種別': {
+                    type: 'select',
+                    select: {
+                        name: saleSort || 'Unknown', // Provide a default value if manager is undefined
+                    },
+                },
+                '施工進行状況': {
+                    type: 'select',
+                    select: {
+                        name: constructionProgress || 'Unknown', // Provide a default value if manager is undefined
+                    },
+                },
+                '現地調査日': {
+                    type: 'date',
+                    date: { start: onSiteSurveyDate || new Date().toISOString(),
+                     },
+                },
+                '施工図作成': {
+                    type: 'date',
+                    date: { start: constructionDrawing || new Date().toISOString(),
+                     },
+                },
+                'カルテ・図面': {
+                    type: 'date',
+                    date: { start: chatAndDrawing || new Date().toISOString(),
+                     },
+                },
+                '上棟日': {
+                    type: 'date',
+                    date: { start: constructionStartDate || new Date().toISOString(),
+                     },
+                },
+                '機器配置提案図': {
+                    type: 'date',
+                    date: { start: equipmentProposal || new Date().toISOString(),
+                     },
+                },
+                '機器配置確定': {
+                    type: 'date',
+                    date: { start: equipmentConfirm || new Date().toISOString(),
+                     },
+                },
+                '申請案内メール': {
+                    type: 'date',
+                    date: { start: appGuideEmail || new Date().toISOString(),
+                     },
+                },
+                'アカウント作成依頼日': {
+                    type: 'date',
+                    date: { start: accountRequestDate || new Date().toISOString(),
+                     },
+                },
+                '施工会社担当者名': {
+                    type: 'rich_text',
+                    rich_text: [
+                        {
+                            type: 'text',
+                            text: {
+                                content: constructionPersonName || 'Untitled', // Provide a default value if productName is undefined
+                            },
+                        },
+                    ],
+                },
+                '先行配線日': {
+                    type: 'date',
+                    date: { start: preWritingDate || new Date().toISOString(),
+                     },
+                },
+                'パネル設置日': {
+                    type: 'date',
+                    date: { start: panelInstallDate || new Date().toISOString(),
+                     },
+                },
+                '器具付日': {
+                    type: 'date',
+                    date: { start: applianceInstallDate || new Date().toISOString(),
+                     },
+                },
+                '初期設定日': {
+                    type: 'date',
+                    date: { start: initialDate || new Date().toISOString(),
+                     },
+                },
+                '太陽光施工店納品日': {
+                    type: 'date',
+                    date: { start: solarInstallDate || new Date().toISOString(),
+                     },
+                },
+            },
+        });
+    } catch (error) {
+        console.error(error.body);
+    }
+}
 
+// 関数のエクスポート
 module.exports = {
     addOrderShipmentDB: addOrderShipmentDB,
     addMoneyManagementDB: addMoneyManagementDB,
+    addCompanyManagementDB: addCompanyManagementDB,
   };

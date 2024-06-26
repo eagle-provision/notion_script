@@ -2,7 +2,7 @@ const { Client } = require("@notionhq/client");
 require("dotenv").config();
 
 const notion = new Client({ auth: process.env.NOTION_API_KEY });
-
+// 現在存在するnotionからページを削除する（定期的に更新されるGoogleシートの資料を反映するための必須操作）
 async function deleteAllPages(databaseID) {
   let hasMore = true;
   let startCursor = undefined;
@@ -22,6 +22,7 @@ async function deleteAllPages(databaseID) {
   }
 }
 
+// 関数のエクスポート
 module.exports = {
   deleteAllPages: deleteAllPages,
 };
